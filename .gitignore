@@ -1,0 +1,5 @@
+__pycache__/
+.env
+venv/
+logs/
+Medical_Chatbot.egg-info/

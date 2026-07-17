@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <title>🌴 SamudaCare | AI Medical Chatbot</title>
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --jamaica-green: #009B3A;
+            --jamaica-gold: #FED100;
+            --jamaica-black: #1a1a1a;
+            --sand: #FFF8E7;
+        }
+
+        * { box-sizing: border-box; }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            margin: 0;
+            padding: 2rem 1rem;
+            min-height: 100vh;
+            background: linear-gradient(160deg, var(--jamaica-green) 0%, #00b347 35%, var(--jamaica-gold) 100%);
+            background-attachment: fixed;
+        }
+
+        .chat-container {
+            max-width: 700px;
+            margin: 0 auto;
+            background: var(--sand);
+            border-radius: 20px;
+            padding: 2rem;
+            box-shadow: 0 10px 35px rgba(0, 0, 0, 0.25);
+            border-top: 8px solid var(--jamaica-black);
+        }
+
+        h1 {
+            font-family: 'Fredoka', sans-serif;
+            text-align: center;
+            color: var(--jamaica-black);
+            margin-top: 0;
+            font-size: 2rem;
+            letter-spacing: 0.5px;
+        }
+
+        h1::after {
+            content: "Yaad Medicine, Trusted Care 🌺";
+            display: block;
+            font-family: 'Poppins', sans-serif;
+            font-size: 0.85rem;
+            font-weight: 300;
+            color: var(--jamaica-green);
+            margin-top: 0.35rem;
+            letter-spacing: 1px;
+        }
+
+        #chat-box {
+            margin-top: 1.5rem;
+            max-height: 55vh;
+            overflow-y: auto;
+            padding-right: 0.25rem;
+        }
+
+        .message {
+            margin-bottom: 1rem;
+            padding: 0.9rem 1.1rem;
+            border-radius: 14px;
+            line-height: 1.45;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+            max-width: 85%;
+        }
+
+        .message strong {
+            font-family: 'Fredoka', sans-serif;
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            opacity: 0.75;
+        }
+
+        .user {
+            background-color: var(--jamaica-gold);
+            color: var(--jamaica-black);
+            text-align: right;
+            margin-left: auto;
+            border-bottom-right-radius: 3px;
+        }
+
+        .assistant {
+            background-color: var(--jamaica-green);
+            color: #fff;
+            text-align: left;
+            margin-right: auto;
+            border-bottom-left-radius: 3px;
+        }
+
+        .assistant strong { color: #eafff0; }
+
+        form { margin-top: 1.5rem; }
+
+        textarea {
+            width: 100%;
+            height: 3.5rem;
+            padding: 0.75rem;
+            font-size: 1rem;
+            font-family: 'Poppins', sans-serif;
+            border: 2px solid var(--jamaica-green);
+            border-radius: 10px;
+            resize: vertical;
+        }
+
+        textarea:focus {
+            outline: none;
+            border-color: var(--jamaica-black);
+        }
+
+        button {
+            padding: 0.65rem 1.4rem;
+            font-size: 1rem;
+            font-family: 'Fredoka', sans-serif;
+            margin-top: 0.75rem;
+            border: none;
+            border-radius: 10px;
+            background-color: var(--jamaica-black);
+            color: var(--jamaica-gold);
+            cursor: pointer;
+            transition: transform 0.15s ease, background-color 0.15s ease;
+        }
+
+        button:hover {
+            background-color: var(--jamaica-green);
+            transform: translateY(-1px);
+        }
+
+        .clear-btn {
+            background-color: transparent;
+            color: var(--jamaica-black);
+            border: 2px solid var(--jamaica-black);
+        }
+
+        .clear-btn:hover {
+            background-color: var(--jamaica-black);
+            color: var(--jamaica-gold);
+        }
+
+        .error {
+            color: #c0392b;
+            background-color: #ffe5e2;
+            padding: 0.6rem 0.9rem;
+            border-radius: 8px;
+            font-weight: 600;
+        }
+    </style>
+</head>
+<body>
+    <div class="chat-container">
+        <h1>🌴 SamudaCare</h1>
+        {% if error %}
+            <p class="error">{{ error }}</p>
+        {% endif %}
+        <div id="chat-box">
+            {% for msg in messages %}
+                <div class="message {{ msg.role }}">
+                    <strong>{{ msg.role|capitalize }}:</strong><br />
+                    {{ msg.content | safe | nl2br }}
+                </div>
+            {% endfor %}
+        </div>
+        <form method="post" action="{{ url_for('index') }}">
+            <textarea name="prompt" placeholder="Ask a medical question..." required></textarea>
+            <br />
+            <button type="submit">Send</button>
+        </form>
+        <form method="get" action="{{ url_for('clear') }}">
+            <button type="submit" class="clear-btn">Clear Chat</button>
+        </form>
+    </div>
+</body>
+</html>
