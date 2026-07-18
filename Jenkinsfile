@@ -41,15 +41,17 @@ pipeline {
         }
 
         stage('Deploy to ECS') {
-            steps {
-                sh '''
-                    aws ecs update-service \
-                    --cluster default \
-                    --service samuda-cares-f8e0 \
-                    --force-new-deployment \
-                    --region us-east-1
-                '''
-            }
+    steps {
+        withCredentials([[$class: 'AmazonWebServicesCredentialsBinding', credentialsId: 'aws-creds']]) {
+            sh '''
+                aws ecs update-service \
+                  --cluster default \
+                  --service samuda-cares-f8e0 \
+                  --force-new-deployment \
+                  --region us-east-1
+            '''
         }
+    }
+}
     }
 }
