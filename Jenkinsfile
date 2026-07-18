@@ -42,7 +42,7 @@ pipeline {
 
         stage('Deploy to ECS') {
     steps {
-        withCredentials([[$class: 'AmazonWebServicesCredentialsBinding', credentialsId: 'aws-creds']]) {
+        withCredentials([[$class: 'AmazonWebServicesCredentialsBinding', credentialsId: 'aws-token']]) {
             sh '''
                 aws ecs update-service \
                   --cluster default \
